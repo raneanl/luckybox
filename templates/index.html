@@ -8,7 +8,7 @@
     <h1>🎁 럭키박스: 1~30번 중 하나를 선택하세요!</h1>
     <div class="grid">
         {% for i in range(1, 31) %}
-            <button onclick="pickNumber({{ i }})" id="box-{{ i }}">{{ i }}</button>
+            <button onclick="pickNumber({ i })" id="box-{{ i }}">{{ i }}</button>
         {% endfor %}
     </div>
     <div id="result"></div>
