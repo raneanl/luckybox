@@ -34,6 +34,17 @@
             } else {
                 result.innerHTML = `<h2>😢 ${number}번은 꽝입니다!</h2>`;
             }
+
+            if (data.status === "reset") {
+                document.getElementById("result").innerHTML = "<h2>🎉 모든 박스를 다 열었습니다! 다시 시작합니다.</h2>";
+                // 모든 버튼 초기화
+                for (let i = 1; i <= 30; i++) {
+                    const box = document.getElementById(`box-${i}`);
+                    box.disabled = false;
+                    box.classList.remove("disabled");
+                }
+                return;
+            }
         }
     </script>
 </body>
