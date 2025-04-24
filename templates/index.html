@@ -23,6 +23,9 @@
                 body: JSON.stringify({ number }),
                 credentials: "include"  // ✅ 이거 꼭 넣어줘야 쿠키가 전달돼!
               });
+            
+
+            const data = await res.json(); // ✅ 이거 꼭 있어야 함!
 
             const result = document.getElementById("result");
             const box = document.getElementById(`box-${number}`);
@@ -32,8 +35,12 @@
             if (data.status === "win") {
                 result.innerHTML = `<h2>🎉 ${number}번 당첨! 선물: ${data.prize.name}</h2><img src='/static/${data.prize.image}' width='150'>`;
             } else if (data.status === "used") {
-                result.innerHTML = `<h2>❌ 이미 사용된 번호입니다.</h2>`;
+            if (data.result === "win") {
+                result.innerHTML = `<h2>❗이미 당첨된 번호입니다: ${data.prize.name}</h2>`;
             } else {
+                result.innerHTML = `<h2>❗이미 선택된 꽝 번호입니다.</h2>`;
+            }
+            } else if (data.status === "lose") {
                 result.innerHTML = `<h2>😢 ${number}번은 꽝입니다!</h2>`;
             }
 
