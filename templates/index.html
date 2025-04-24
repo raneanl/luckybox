@@ -8,7 +8,7 @@
     <h1>🎁 럭키박스: 1~30번 중 하나를 선택하세요!</h1>
     <div class="grid">
         {% for i in range(1, 31) %}
-            <button onclick="pickNumber({ i })" id="box-{{ i }}">{{ i }}</button>
+            <button onclick="pickNumber({{ i }})" id="box-{{ i }}">{{ i }}</button>
         {% endfor %}
     </div>
     <div id="result"></div>
@@ -17,10 +17,12 @@
         async function pickNumber(number) {
             const res = await fetch("/pick", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ number })
-            });
-            const data = await res.json();
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ number }),
+                credentials: "include"  // ✅ 이거 꼭 넣어줘야 쿠키가 전달돼!
+              });
 
             const result = document.getElementById("result");
             const box = document.getElementById(`box-${number}`);
