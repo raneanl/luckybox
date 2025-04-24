@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>럭키박스 게임</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>🎁 럭키박스: 1~30번 중 하나를 선택하세요!</h1>
+    <div class="grid">
+        {% for i in range(1, 31) %}
+            <button onclick="pickNumber({{ i }})" id="box-{{ i }}">{{ i }}</button>
+        {% endfor %}
+    </div>
+    <div id="result"></div>
+
+    <script>
+        async function pickNumber(number) {
+            const res = await fetch("/pick", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ number })
+            });
+            const data = await res.json();
+
+            const result = document.getElementById("result");
+            const box = document.getElementById(`box-${number}`);
+            box.disabled = true;
+            box.classList.add("disabled");
+
+            if (data.status === "win") {
+                result.innerHTML = `<h2>🎉 ${number}번 당첨! 선물: ${data.prize.name}</h2><img src='/static/${data.prize.image}' width='150'>`;
+            } else if (data.status === "used") {
+                result.innerHTML = `<h2>❌ 이미 사용된 번호입니다.</h2>`;
+            } else {
+                result.innerHTML = `<h2>😢 ${number}번은 꽝입니다!</h2>`;
+            }
+        }
+    </script>
+</body>
+</html>
